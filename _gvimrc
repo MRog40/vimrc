@@ -1,0 +1,21 @@
+colorscheme onedark
+
+set go = 
+
+set lines=35
+set columns=90
+
+" Base colors
+hi NonText ctermbg=NONE
+
+" Vertsplit Theme
+hi LineNr guibg=bg
+set foldcolumn=0
+hi foldcolumn guibg=bg
+hi VertSplit guibg=bg guifg=bg
+hi StatusLineNC guibg=bg guifg=fg
+hi StatusLine guibg=bg guifg=#52ADF2
+
+" Font
+set guifont=Consolas:h10:cANSI
+
