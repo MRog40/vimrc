@@ -1,21 +1,26 @@
 " Michael Rogers .vsvimrc
 
-" Use system clipboard for default register
-set clipboard=unnamed
-
 " Highlight syntax
 syntax on
-syntax enable
 
 " Color Scheme
-colors slate
-set fillchars="stl:-,stlnc:-,vert:¦"
 hi VertSplit ctermfg=White ctermbg=Black
 hi StatusLine ctermfg=White ctermbg=Black
 hi StatusLineNC ctermfg=White ctermbg=Black
 
+hi TabLineFill gui=NONE guibg=#181A1F guifg=#181A1F cterm=NONE term=NONE ctermfg=gray ctermbg=black
+hi TabLine gui=NONE guibg=#181A1F guifg=#888888 cterm=NONE term=NONE ctermfg=gray ctermbg=black
+hi TabLineSel gui=NONE guibg=#181A1F guifg=#CCCCCC cterm=NONE term=NONE ctermfg=blue ctermbg=black
+
+syntax enable
+
 " Number lines
 set number
+set tw=80
+
+" Wrap lines
+set wrap
+autocmd BufNewFile,BufRead *.html setlocal nowrap
 
 " Use spaces instead of tabs and autoindent
 set tabstop=4
@@ -29,19 +34,16 @@ set backspace=indent,eol,start
 " Use system clipboard for default register
 set clipboard=unnamed
 
-" Ctrl+S to save
-map <C-S> :w <CR>
+" Highlight search terms
+set incsearch
+
 " Ctrl+S to save
 map <C-S> :w <CR>
 
 " Exit insert mode with keys
-imap jj <ESC>
-imap jk <ESC>
-imap kj <ESC>
-imap kk <ESC>
-
-" Remap F1 to Escape to avoid accidentally opening help
-imap <F1> <ESC>
+inoremap <esc> <nop>
+inoremap jk <ESC>
+inoremap kj <ESC>
 
 " Navigate tabs with H and L
 nnoremap H gT
