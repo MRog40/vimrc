@@ -3,16 +3,25 @@
 " Highlight syntax
 syntax on
 
+" Automatically load external file changes
+set autoread
+
 " Color Scheme
-hi VertSplit ctermfg=White ctermbg=Black
-hi StatusLine ctermfg=White ctermbg=Black
-hi StatusLineNC ctermfg=White ctermbg=Black
+"hi VertSplit ctermfg=White ctermbg=Black
+"hi StatusLine ctermfg=White ctermbg=Black
+"hi StatusLineNC ctermfg=White ctermbg=Black
+"
+"hi TabLineFill gui=NONE guibg=#181A1F guifg=#181A1F cterm=NONE term=NONE ctermfg=gray ctermbg=black
+"hi TabLine gui=NONE guibg=#181A1F guifg=#888888 cterm=NONE term=NONE ctermfg=gray ctermbg=black
+"hi TabLineSel gui=NONE guibg=#181A1F guifg=#CCCCCC cterm=NONE term=NONE ctermfg=blue ctermbg=black
 
-hi TabLineFill gui=NONE guibg=#181A1F guifg=#181A1F cterm=NONE term=NONE ctermfg=gray ctermbg=black
-hi TabLine gui=NONE guibg=#181A1F guifg=#888888 cterm=NONE term=NONE ctermfg=gray ctermbg=black
-hi TabLineSel gui=NONE guibg=#181A1F guifg=#CCCCCC cterm=NONE term=NONE ctermfg=blue ctermbg=black
+colorscheme slate
 
+" Highlight Syntax
 syntax enable
+
+"No annoying beeping
+set vb t_vb=
 
 " Number lines
 set number
@@ -20,7 +29,10 @@ set tw=80
 
 " Wrap lines
 set wrap
-autocmd BufNewFile,BufRead *.html setlocal nowrap
+augroup nowraps
+    autocmd BufNewFile,BufRead *.html setlocal nowrap
+    autocmd BufNewFile,BufRead *.bat setlocal nowrap
+augroup END
 
 " Use spaces instead of tabs and autoindent
 set tabstop=4
@@ -59,6 +71,9 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
+" Map leader
+let mapleader = ","
+
 " Open splits to the left and right, more natural
 set splitbelow
 set splitright
@@ -74,8 +89,8 @@ augroup run_compiles
     au BufEnter,BufNew *.nec map <F5> :call RunNEC() <CR>
 augroup END
 
-" F4 To Reload vimrc
-map <F4> :source $MYVIMRC <CR>
+" F1 To Reload vimrc
+map <F1> :source $MYVIMRC <CR>
 
 " F3 To Sync to Git
 map <F3> :term sync.bat <CR>
@@ -128,15 +143,25 @@ function! LF()
 endfunction
 command! -bar LF call LF()
 
-" Kite Python Autocomplete Settings
-" let g:kite_tab_complete=1
-" let g:kite_documentation_continual=1
-"set completeopt+=menuone   " show the popup menu even when there is only 1 match
-"set completeopt+=noinsert  " don't insert any text until user chooses a match
-"set completeopt-=longest   " don't insert the longest common text
-"set completeopt+=preview
-set belloff+=ctrlg  " if vim beeps during completion
-let g:kite_previous_placeholder = '<C-P>'
-let g:kite_next_placeholder = '<C-N>'
-set statusline=%<%f\ %h%m%r%{kite#statusline()}%=%-14.(%l,%c%V%)\ %P
-set laststatus=2  " always display the status line
+" StatusLine
+set statusline=[%n]\ %<%.99f\ %h%w%m%r%{exists('*CapsLockStatusline')?CapsLockStatusline():''}%y%=%-16(\ %l,%c-%v\ %)%P
+set laststatus=2
+
+" Add python3 support
+set pythonthreedll=python37.dll
+
+" Vim Plugins
+call plug#begin('~/.vim/plugged')
+
+" Syntax Hightlighting
+Plug 'vim-python/python-syntax'
+Plug 'vim-jp/vim-cpp'
+Plug 'jaxbot/semantic-highlight.vim'
+
+" Python autocompletion
+Plug 'davidhalter/jedi-vim'
+
+call plug#end()
+
+
+
