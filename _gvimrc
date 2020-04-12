@@ -1,35 +1,32 @@
 
 if !has('nvim')
-set go = 
+    set go = 
 
-set lines=35
-set columns=90
+    set lines=35
+    set columns=90
 
-" Base colors
-hi NonText ctermbg=NONE
+    " Base colors
+    hi NonText ctermbg=NONE
 
-" Vertsplit Theme
-hi LineNr guibg=bg
-set foldcolumn=0
-hi foldcolumn guibg=bg
-hi VertSplit guibg=bg guifg=bg
-hi StatusLineNC guibg=bg guifg=fg
-hi StatusLine guibg=bg guifg=#52ADF2
+    " Vertsplit Theme
+    hi LineNr guibg=bg
+    set foldcolumn=0
+    hi foldcolumn guibg=bg
+    hi VertSplit guibg=bg guifg=bg
+    hi StatusLineNC guibg=bg guifg=fg
+    hi StatusLine guibg=bg guifg=#52ADF2
 
-" Font
-set guifont=Consolas:h10:cANSI
+    " Font
+    set guifont=Consolas:h10:cANSI
 endif
 
 " Neovim-qt settings
 if has('nvim')
     if exists('g:GuiLoaded')
-
-" Font
-GuiFont! Consolas:h10
-GuiLinespace 2
-GuiTabline 0
-GuiPopupmenu 0
-
+        GuiFont! Consolas:h10
+        GuiLinespace 2
+        GuiTabline 0
+        GuiPopupmenu 0
     endif
 endif
 

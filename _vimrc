@@ -148,30 +148,19 @@ endif
 
 " nvim only plugins
 call plug#begin('~/.vim/plugged')
+    Plug 'vim-airline/vim-airline'
 
-Plug 'vim-airline/vim-airline'
+    Plug 'vim-python/python-syntax'
+    Plug 'vim-jp/vim-cpp'
+    Plug 'jaxbot/semantic-highlight.vim'
 
-" Syntax Hightlighting
-Plug 'vim-python/python-syntax'
-Plug 'vim-jp/vim-cpp'
-Plug 'jaxbot/semantic-highlight.vim'
+    Plug 'morhetz/gruvbox'
 
-" Colorscheme
-Plug 'morhetz/gruvbox'
-
-" coc intellisense
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
-
-" Neovim only settings
-if has('nvim')
 
 " StatusLine
 set laststatus=2
-
-endif
 
 
 " Gruvbox colorscheme
