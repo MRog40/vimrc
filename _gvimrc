@@ -1,5 +1,5 @@
-colorscheme onedark
 
+if !has('nvim')
 set go = 
 
 set lines=35
@@ -18,4 +18,18 @@ hi StatusLine guibg=bg guifg=#52ADF2
 
 " Font
 set guifont=Consolas:h10:cANSI
+endif
+
+" Neovim-qt settings
+if has('nvim')
+    if exists('g:GuiLoaded')
+
+" Font
+GuiFont! Consolas:h10
+GuiLinespace 2
+GuiTabline 0
+GuiPopupmenu 0
+
+    endif
+endif
 

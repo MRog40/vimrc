@@ -48,19 +48,3 @@ inoremap kj <ESC>
 " Navigate tabs with H and L
 nnoremap H gT
 nnoremap L gt
-
-" Move between wrapped lines easily by remapping j and k
-nnoremap <expr> j v:count ? 'j' : 'gj'
-nnoremap <expr> k v:count ? 'k' : 'gk'
-
-" Move between splits with ctrl hjkl
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-
-" Open splits to the left and right, more natural
-set splitbelow
-set splitright
-
-set fileencoding=utf8
