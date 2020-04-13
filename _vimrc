@@ -1,58 +1,78 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Michael Rogers .vimrc
+"  - Used with terminal vim, gvim, and neovim-qt on Windows
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Highlight syntax
-syntax on
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Vim Plugins with Vim-Plug - run PlugInstall and PlugClean
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+call plug#begin('~/.vim/plugged')
+    Plug 'scrooloose/nerdtree'          " File browser
+    Plug 'dreadnaut/vim-bargreybars'    " Fix gvim fullscreen white border
+    Plug 'vim-airline/vim-airline'      " Fancy statusline
+    Plug 'morhetz/gruvbox'              " Colorscheme gruvbox
+    Plug 'vim-python/python-syntax'     " Better python syntax
+    Plug 'vim-jp/vim-cpp'               " Better c/cpp syntax
+    Plug 'tpope/vim-surround'           " Surround operator
+    Plug 'tpope/vim-commentary'         " Comment operator (gcc)
+    Plug 'tpope/vim-repeat'             " Make . better for plugins
+    Plug 'glts/vim-radical'             " gA to see, cr? to change base
+    Plug 'tmsvg/pear-tree'              " Automatically pair stuff
+call plug#end()
 
-" Automatically load external file changes
-set autoread
 
-" No chars in vertical split
-set fillchars+=vert:\ 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" General Settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+colorscheme gruvbox
+syntax on " Highlight syntax
+set scrolloff=4 " Always have at least 4 lines
+set autoread " Automatically load external file changes
+set wildmenu " Set command menu autocomplete
+set vb t_vb= " No annoying beeping
+set laststatus=2 " StatusLine
+set relativenumber " Number lines
+set tw=80 " Lines 80 characters long
+set backspace=indent,eol,start " Use traditional backspaces
+set clipboard=unnamed " Use system clipboard
+set nohlsearch " Dont highlight search
+set ignorecase " Case insensitive search
+set pythonthreedll=python37.dll " Add python3 support to gvim
+set tabstop=4 " 4 spaces default
+set shiftwidth=4
+set expandtab " Spaces
+set autoindent " Autoindent new line
+set splitbelow " Open splits below
+set splitright " Open splits to the right
+set fileencoding=utf8 " utf8 files
+
+set guicursor=i-c:ver18-Search " Custom cursor
+set guicursor=o:block-Search
+set guicursor=r:hor15-Search
+set guicursor=a:blinkwait0 " No cursor blinking
+
+set fillchars+=vert:\  " Empty dividers for nicer looking splits
 hi LineNr guibg=bg
-set foldcolumn=2
 hi foldcolumn guibg=bg
 hi VertSplit guibg=bg guifg=bg
 
-" Highlight Syntax
-syntax enable
 
-"No annoying beeping
-set vb t_vb=
-
-" Number lines
-set number
-set tw=80
-
-" Wrap lines
-set wrap
-augroup nowraps
-    autocmd BufNewFile,BufRead *.html setlocal nowrap
-    autocmd BufNewFile,BufRead *.bat setlocal nowrap
-augroup END
-
-" Use spaces instead of tabs and autoindent
-set tabstop=4
-set shiftwidth=4
-set expandtab
-set autoindent
-
-" Use traditional backspaces
-set backspace=indent,eol,start
-
-" Use system clipboard for default register
-set clipboard=unnamed
-
-" Highlight search terms
-"set incsearch
-set nohlsearch
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Keybindings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Map leader
+let mapleader = ","
 
 " Ctrl+S to save
 map <C-S> :w <CR>
 
-" Exit insert mode with keys
-inoremap <esc> <nop>
+" Exit modes with chord
 inoremap jk <ESC>
 inoremap kj <ESC>
+cnoremap jk <ESC>
+cnoremap kj <ESC>
+tnoremap jk <C-\><C-n>
+tnoremap kj <C-\><C-n>
 
 " Navigate tabs with H and L
 nnoremap H gT
@@ -68,36 +88,30 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-" Map leader
-let mapleader = ","
-
-" Open splits to the left and right, more natural
-set splitbelow
-set splitright
-
-set fileencoding=utf8
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Autocommands
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Automatic line wrapping
+set wrap
+augroup nowraps
+    autocmd BufNewFile,BufRead *.html setlocal nowrap
+    autocmd BufNewFile,BufRead *.bat setlocal nowrap
+augroup END
 
 " F5 To Run/Compile Stuff
-augroup run_compiles
-    au BufEnter,BufNew *.py map <F5> :term python % <CR>
+augroup run_compiles_vim
+    au BufEnter,BufNew *.py map <F5> :term python -i % <CR>
     au BufEnter,BufNew *.c map <F5> :term gcc -o %< % <CR>
     au BufEnter,BufNew *.cpp map <F5> :term g++ -o %< % <CR>
     au BufEnter,BufNew *.tex map <F5> :call CompileTex() <CR>
     au BufEnter,BufNew *.nec map <F5> :call RunNEC() <CR>
+    au BufEnter,BufNew _vimrc map <F5> :source ~/_vimrc <CR>
+    au BufEnter,BufNew _gvimrc map <F5> :source ~/_gvimrc <CR>
 augroup END
 
-" F1 To Reload vimrc
-map <F1> :source $MYVIMRC <CR>
-
-" F3 To Sync to Git
-map <F3> :term sync.bat <CR>
-
-" Auto increment names for version control
-function! IncName(dir,ext)
-    let fns = split(globpath(a:dir,expand('%:r')."_v".'*.'.a:ext),'\n')
-    return expand('%:r') . "_v" . repeat(0,4-len(len(fns))).len(fns).'.'.a:ext
-    endfunction
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Functions
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Compile LaTeX to PDF and delete logs
 function! CompileTex()
     let cmd = "silent !cd \"" . expand('%:p:h') .  "\""
@@ -119,190 +133,21 @@ function! RunNEC()
     execute cmd
 endfunction
 
-" Open files with the LF file browser
-function! LF()
-    let temp = tempname()
-        exec 'silent !lf -selection-path=' . shellescape(temp)
-    if !filereadable(temp)
-        redraw!
-        return
-        endif
-        let names = readfile(temp)
-    if empty(names)
-        redraw!
-        return
-        endif
-        exec 'edit ' . fnameescape(names[0])
-        for name in names[1:]
-        exec 'argadd ' . fnameescape(name)
-        endfor
-        redraw!
-endfunction
-command! -bar LF call LF()
+" Auto increment names for version control (not currently used)
+function! IncName(dir,ext)
+    let fns = split(globpath(a:dir,expand('%:r')."_v".'*.'.a:ext),'\n')
+    return expand('%:r') . "_v" . repeat(0,4-len(len(fns))).len(fns).'.'.a:ext
+    endfunction
 
-" Add python3 support to vim
-if !has('nvim')
-    set pythonthreedll=python37.dll
-endif
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugin Settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" NERDTree Settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Ctrl+F toggles NERDTree
+nnoremap <silent> <C-f> :NERDTreeToggle<CR>
+let g:NERDTreeQuitOnOpen = 1 " Close when file is opened
 
+" ??? Settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" nvim only plugins
-call plug#begin('~/.vim/plugged')
-    Plug 'vim-airline/vim-airline'
-
-    Plug 'vim-python/python-syntax'
-    Plug 'vim-jp/vim-cpp'
-    Plug 'jaxbot/semantic-highlight.vim'
-
-    Plug 'morhetz/gruvbox'
-
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
-call plug#end()
-
-" StatusLine
-set laststatus=2
-
-
-" Gruvbox colorscheme
-set t_Co=256
-colorscheme gruvbox
-
-" TextEdit might fail if hidden is not set.
-set hidden
-
-" Some servers have issues with backup files, see #649.
-set nobackup
-set nowritebackup
-
-" Give more space for displaying messages.
-set cmdheight=2
-
-" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
-" delays and poor user experience.
-set updatetime=300
-
-" Don't pass messages to |ins-completion-menu|.
-set shortmess+=c
-
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-set signcolumn=yes
-
-" Use tab for trigger completion with characters ahead and navigate.
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
-" position. Coc only does snippet and additional edit on confirm.
-if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-else
-  imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-endif
-
-" Use `[g` and `]g` to navigate diagnostics
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
-
-" Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
-
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-" Remap keys for applying codeAction to the current line.
-nmap <leader>ac  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-nmap <leader>qf  <Plug>(coc-fix-current)
-
-" Introduce function text object
-" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-xmap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap if <Plug>(coc-funcobj-i)
-omap af <Plug>(coc-funcobj-a)
-
-" Use <TAB> for selections ranges.
-" NOTE: Requires 'textDocument/selectionRange' support from the language server.
-" coc-tsserver, coc-python are the examples of servers that support it.
-nmap <silent> <TAB> <Plug>(coc-range-select)
-xmap <silent> <TAB> <Plug>(coc-range-select)
-
-" Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocAction('format')
-
-" Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
-" Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-" Add (Neo)Vim's native statusline support.
-" NOTE: Please see `:h coc-status` for integrations with external plugins that
-" provide custom statusline: lightline.vim, vim-airline.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
-" Mappings using CoCList:
-" Show all diagnostics.
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-" Manage extensions.
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
-" Show commands.
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
-" Find symbol of current document.
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols.
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
-" Resume latest coc list.
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
