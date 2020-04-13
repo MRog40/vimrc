@@ -74,6 +74,9 @@ cnoremap kj <ESC>
 tnoremap jk <C-\><C-n>
 tnoremap kj <C-\><C-n>
 
+" More terminal interaction
+tnoremap <C-S> <C-\><C-n>
+
 " Navigate tabs with H and L
 nnoremap H gT
 nnoremap L gt
@@ -147,6 +150,15 @@ function! IncName(dir,ext)
 " Ctrl+F toggles NERDTree
 nnoremap <silent> <C-f> :NERDTreeToggle<CR>
 let g:NERDTreeQuitOnOpen = 1 " Close when file is opened
+
+" Fullscreen mode with external dll, toggled with F11
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! ToggleFullScreen()
+  if has('win32')
+    :call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)
+  endif
+endfunction
+map <silent> <F11> <Esc>:call ToggleFullScreen()<CR>
 
 " ??? Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

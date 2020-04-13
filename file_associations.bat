@@ -65,7 +65,7 @@ assoc .js=sourcecode
 assoc .html=sourcecode
 assoc .log=sourcecode
 assoc .DAT=sourcecode
-ftype sourcecode="C:\tools\neovim\Neovim\bin\nvim-qt.exe" "%%~1"
-REM ftype sourcecode="C:\Program Files\Vim\vim72\gvim.exe" --remote-silent "%%1"
+REM ftype sourcecode="C:\tools\neovim\Neovim\bin\nvim-qt.exe" "%%~1"
+ftype sourcecode="C:\Program Files (x86)\Vim\vim81\gvim.exe" --remote-silent "%%1"
 
 pause
