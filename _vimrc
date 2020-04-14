@@ -104,6 +104,7 @@ augroup END
 " F5 To Run/Compile Stuff
 augroup run_compiles_vim
     au BufEnter,BufNew *.py map <F5> :term python -i % <CR>
+    au BufEnter,BufNew *.py map <F4> :silent ! python % <CR>
     au BufEnter,BufNew *.c map <F5> :term gcc -o %< % <CR>
     au BufEnter,BufNew *.cpp map <F5> :term g++ -o %< % <CR>
     au BufEnter,BufNew *.tex map <F5> :call CompileTex() <CR>
