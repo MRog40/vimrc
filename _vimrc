@@ -36,7 +36,6 @@ set tw=80 " Lines 80 characters long
 set backspace=indent,eol,start " Use traditional backspaces
 set clipboard=unnamed " Use system clipboard
 set nohlsearch " Dont highlight search
-set ignorecase " Case insensitive search
 set pythonthreedll=python37.dll " Add python3 support to gvim
 set tabstop=4 " 4 spaces default
 set shiftwidth=4
