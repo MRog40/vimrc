@@ -18,7 +18,8 @@ if !has('nvim')
     hi VertSplit guibg=bg guifg=bg
 
     " Font
-    set guifont=Consolas:h11
+    "set guifont=Consolas:h11
+    set guifont=iosevka:h12
     
     " Disable edge of screen bell
     set belloff=all
