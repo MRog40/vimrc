@@ -91,8 +91,7 @@ set foldmethod=expr             " Fold based on syntax of language
 let mapleader = ","
 
 " Ctrl+S to save
-" map <C-S> :call popup_dialog('Continue? y/n', #{
-"                 \ filter: 'popup_filter_yesno',})<CR>
+map <C-S> :w<CR>
 
 " Ctrl+Q to close
 map <C-Q> :q<CR>
@@ -211,6 +210,18 @@ endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
+let g:easy_align_delimiters = {
+\ '>': { 'pattern': '>>\|=>\|>' },
+\ '/': {
+\     'pattern':         '//\+\|/\*\|\*/',
+\     'delimiter_align': 'l',
+\     'ignore_groups':   ['!Comment'] },
+\ 'd': {
+\     'pattern':      ' \(\S\+\s*[;=]\)\@=',
+\     'left_margin':  0,
+\     'right_margin': 0
+\   }
+\ }
 
 " NERDTree Settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
