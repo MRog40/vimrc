@@ -4,45 +4,46 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Vim Plugins with Vim-Plug - run PlugInstall and PlugClean
+" VIM PLUGINS WITH VIM-PLUG - RUN PlugInstall AND PlugClean
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
-    " General functionality
-    Plug 'preservim/nerdtree'           " File browser 
-    Plug 'dreadnaut/vim-bargreybars'    " Fix gvim fullscreen white border
-    Plug 'tpope/vim-surround'           " Surround operator
-    Plug 'tpope/vim-commentary'         " Comment operator (gcc)
-    Plug 'tpope/vim-repeat'             " Make . better for plugins
-    Plug 'junegunn/vim-easy-align'      " Easily align stuff 
-    Plug 'godlygeek/tabular'            " Another alignment tool
-    Plug 'panozzaj/vim-autocorrect'     " Fix common typos
+" General functionality
+Plug 'preservim/nerdtree'           " File browser 
+Plug 'dreadnaut/vim-bargreybars'    " Fix gvim fullscreen white border
+Plug 'tpope/vim-surround'           " Surround operator
+Plug 'tpope/vim-commentary'         " Comment operator (gcc)
+Plug 'tpope/vim-repeat'             " Make . better for plugins
+Plug 'junegunn/vim-easy-align'      " Easily align stuff 
+Plug 'godlygeek/tabular'            " Another alignment tool
+Plug 'panozzaj/vim-autocorrect'     " Fix common typos
+Plug 'ctrlpvim/ctrlp.vim'           " fuzzy finder written in vimscript
 
-    " Aesthetic
-    Plug 'morhetz/gruvbox'              " Colorscheme gruvbox
-    Plug 'vim-airline/vim-airline'      " Fancy statusline
-    Plug 'junegunn/goyo.vim'            " Distraction-free writing
+" Aesthetic
+Plug 'morhetz/gruvbox'              " Colorscheme gruvbox
+Plug 'vim-airline/vim-airline'      " Fancy statusline
+Plug 'junegunn/goyo.vim'            " Distraction-free writing
 
-    " Python specific
-    Plug 'vim-python/python-syntax'     " Better python syntax
-    Plug 'vim-scripts/indentpython.vim' " Better python autoindent
-    Plug 'nvie/vim-flake8'              " Python linting on F7
-    Plug 'tmhedberg/SimpylFold'         " Better python folding
+" Python specific
+Plug 'vim-python/python-syntax'     " Better python syntax
+Plug 'vim-scripts/indentpython.vim' " Better python autoindent
+Plug 'nvie/vim-flake8'              " Python linting on F7
+Plug 'tmhedberg/SimpylFold'         " Better python folding
 
-    " Markdown specific 
-    Plug 'vimwiki/vimwiki'               " vimwiki
-    Plug 'gpanders/vim-medieval'         " Run code blocks to fill others
-    Plug 'masukomi/vim-markdown-folding' " Folding for md files 
-    Plug 'mzlogin/vim-markdown-toc'      " Generate TOC with :GenTocGFM
-    Plug 'ferrine/md-img-paste.vim'      " Paste image into md
-    Plug 'iamcco/markdown-preview.vim'   " Preview Markdowns
+" Markdown specific 
+Plug 'plasticboy/vim-markdown/'      " Better markdown syntax
+Plug 'gpanders/vim-medieval'         " Run code blocks to fill others
+Plug 'masukomi/vim-markdown-folding' " Folding for md files 
+Plug 'mzlogin/vim-markdown-toc'      " Generate TOC with :GenTocGFM
+Plug 'ferrine/md-img-paste.vim'      " Paste image into md
+Plug 'iamcco/markdown-preview.vim'   " Preview md
 
-    " Other
-    Plug 'vim-jp/vim-cpp'               " Better c/cpp syntax
+" Other
+Plug 'vim-jp/vim-cpp'               " Better c/cpp syntax
 call plug#end()
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" General Settings
+" GENERAL SETTINGS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has('gui_running')
     colorscheme gruvbox
@@ -51,7 +52,7 @@ else
 endif
 
 syntax on                       " Highlight syntax
-set scrolloff=4                 " Always have at least 4 lines
+set scrolloff=2                 " Always have at least 2 lines
 set autoread                    " Automatically load external file changes
 set wildmenu                    " Set command menu autocomplete
 set vb t_vb=                    " No annoying beeping
@@ -66,6 +67,8 @@ set pythonthreedll=python37.dll " Add python3 support to gvim
 set tabstop=4                   " 4 spaces default
 set softtabstop=4
 set shiftwidth=4
+set nocompatible                " Reduntant I think
+filetype plugin on              " Necessary for Vimwiki
 set expandtab                   " Spaces replace tabs
 set autoindent                  " Autoindent new line
 set splitbelow                  " Open splits below
@@ -85,7 +88,7 @@ hi VertSplit guibg=bg guifg=bg
 set foldmethod=expr             " Fold based on syntax of language
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Keybindings
+" KEYBINDINGS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Map leader
 let mapleader = ","
@@ -131,38 +134,51 @@ nnoremap c<C-L> :rightb vsp new<CR>
 nnoremap c<C-H> :lefta vsp new<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Autocommands
+" AUTOCOMMANDS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Automatic reload vimrc
+autocmd!
+
+augroup vimrc     " Source vim configuration upon save
+    au! BufWritePost $MYVIMRC | so % | redraw
+    au! BufWritePost $MYGVIMRC | so % | redraw
+augroup END
+
 " Automatic line wrapping
 set wrap
 augroup nowraps
-    autocmd BufNewFile,BufRead *.html setlocal nowrap
-    autocmd BufNewFile,BufRead *.bat setlocal nowrap
+    au! BufNewFile,BufRead *.html, *.bat, *.py
+                \ set nowrap
 augroup END
 
 " Some files need 2 space tabs
 augroup auto_tabs
-    au BufNewFile,BufRead *.js, *.html, *.css
-        \ set tabstop=2
-        \ set softtabstop=2
-        \ set shiftwidth=2
+    au! BufEnter *.js, *.html, *.css
+                \ set tabstop=2
+                \ set softtabstop=2
+                \ set shiftwidth=2
 augroup END
 
 " F5 To Run/Compile Stuff
 augroup run_compiles_vim
-    au BufEnter,BufNew *.py map <F5> :term python -i % <CR>
-    au BufEnter,BufNew *.py map <F4> :silent ! python % <CR>
-    au BufEnter,BufNew *.c map <F5> :term gcc -o %< % <CR>
-    au BufEnter,BufNew *.cpp map <F5> :term g++ -o %< % <CR>
-    au BufEnter,BufNew *.tex map <F5> :call CompileTex() <CR>
-    au BufEnter,BufNew *.nec map <F5> :call RunNEC() <CR>
-    au BufEnter,BufNew _vimrc map <F5> :source ~/_vimrc <CR>
-    au BufEnter,BufNew _gvimrc map <F5> :source ~/_gvimrc <CR>
-    au BufEnter,BufNew *.wiki map <F5> :VimwikiAll2HTML <CR>
+    au! BufEnter,BufNew *.py map <F5> :term python -i % <CR>
+    au! BufEnter,BufNew *.py map <F4> :silent ! python % <CR>
+    au! BufEnter,BufNew *.c map <F5> :term gcc -o %< % <CR>
+    au! BufEnter,BufNew *.cpp map <F5> :term g++ -o %< % <CR>
+    au! BufEnter,BufNew *.tex map <F5> :call CompileTex() <CR>
+    au! BufEnter,BufNew *.nec map <F5> :call RunNEC() <CR>
+    au! BufEnter,BufNew _vimrc map <F5> :source ~/_vimrc <CR>
+    au! BufEnter,BufNew _gvimrc map <F5> :source ~/_gvimrc <CR>
+    au! BufEnter,BufNew *.wiki map <F5> :VimwikiAll2HTML <CR>
+augroup END
+
+" Automatic retab
+augroup retabbing
+    au! BufWritePost *.html,*.css,*.js,*.c,*.cpp call FormatTabs()
 augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Functions
+" FUNCTIONS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Compile LaTeX to PDF and delete logs
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -196,6 +212,14 @@ function! ToggleFullScreen()
 endfunction
 map <silent> <F11> <Esc>:call ToggleFullScreen()<CR>
 
+" Reformat HTML on save
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! FormatTabs()
+    normal ggVGgJ
+    :%s/>\s*</>\r</g
+    normal gg=G
+endfunction
+
 " Auto increment names for version control (not currently used)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! IncName(dir,ext)
@@ -204,30 +228,32 @@ function! IncName(dir,ext)
 endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugin Settings
+" PLUGIN SETTINGS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Easy Align Settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 let g:easy_align_delimiters = {
-\ '>': { 'pattern': '>>\|=>\|>' },
-\ '/': {
-\     'pattern':         '//\+\|/\*\|\*/',
-\     'delimiter_align': 'l',
-\     'ignore_groups':   ['!Comment'] },
-\ 'd': {
-\     'pattern':      ' \(\S\+\s*[;=]\)\@=',
-\     'left_margin':  0,
-\     'right_margin': 0
-\   }
-\ }
+            \ '>': { 'pattern': '>>\|=>\|>' },
+            \ '/': {
+            \     'pattern':         '//\+\|/\*\|\*/',
+            \     'delimiter_align': 'l',
+            \     'ignore_groups':   ['!Comment'] },
+            \ 'd': {
+            \     'pattern':      ' \(\S\+\s*[;=]\)\@=',
+            \     'left_margin':  0,
+            \     'right_margin': 0
+            \   }
+            \ }
 
 " NERDTree Settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 map <silent> <C-f> :NERDTreeToggle<CR>
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+augroup nerdtree
+    au StdinReadPre * let s:std_in=1
+    au VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+augroup end
 let g:NERDTreeQuitOnOpen = 1
 
 " Goyo Settings
@@ -243,3 +269,22 @@ augroup md-acmd
 augroup END
 nmap <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
 
+" Make setext style headings
+nnoremap == yypVr=
+nnoremap -- yypVr-
+
+" wiki.vim Settings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:wiki_root = "~/wiki"
+let g:wiki_filetypes = ['md']
+let g:wiki_link_extension = '.md'
+let g:vimwiki_markdown_link_ext = 1
+
+" Setup the type of links I want, and how they should look
+let g:wiki_link_target_map = 'WikiLinkFunction'
+let g:wiki_link_target_type = 'md'
+
+" Convert "My Wiki Link" to "my_wiki_link"
+function! WikiLinkFunction(text) abort
+    return substitute(tolower(a:text), '\s', '', 'g')
+endfunction
