@@ -1,50 +1,15 @@
-" Michael Rogers .vsvimrc
-
-" Highlight syntax
-syntax on
-
-" Color Scheme
-hi VertSplit ctermfg=White ctermbg=Black
-hi StatusLine ctermfg=White ctermbg=Black
-hi StatusLineNC ctermfg=White ctermbg=Black
-
-hi TabLineFill gui=NONE guibg=#181A1F guifg=#181A1F cterm=NONE term=NONE ctermfg=gray ctermbg=black
-hi TabLine gui=NONE guibg=#181A1F guifg=#888888 cterm=NONE term=NONE ctermfg=gray ctermbg=black
-hi TabLineSel gui=NONE guibg=#181A1F guifg=#CCCCCC cterm=NONE term=NONE ctermfg=blue ctermbg=black
-
-syntax enable
-
-" Number lines
-set number
-set tw=80
-
-" Wrap lines
-set wrap
-autocmd BufNewFile,BufRead *.html setlocal nowrap
-
-" Use spaces instead of tabs and autoindent
-set tabstop=4
-set shiftwidth=4
-set expandtab
-set autoindent
-
-" Use traditional backspaces
-set backspace=indent,eol,start
-
-" Use system clipboard for default register
-set clipboard=unnamed
-
-" Highlight search terms
-set incsearch
-
-" Ctrl+S to save
-map <C-S> :w <CR>
-
-" Exit insert mode with keys
-inoremap <esc> <nop>
-inoremap jk <ESC>
-inoremap kj <ESC>
-
-" Navigate tabs with H and L
 nnoremap H gT
 nnoremap L gt
+
+map <C-S> :w<CR>
+map <MiddleMouse> <nop> 
+
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+set clipboard=unnamed
+set ignorecase
+set backspace=indent,eol,start
+set scrolloff=5
