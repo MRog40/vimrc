@@ -1,37 +1,20 @@
-" Michael Rogers .gvimrc
-"  - Used with terminal vim, gvim, and neovim-qt on Windows
+set go = 
 
-if !has('nvim')
-    set go = 
+" Default size when opening
+set lines=66
+set columns=137
 
-    " Default size when opening
-    set lines=40
-    set columns=85
+" Base colors
+" hi NonText ctermbg=NONE
 
-    " Base colors
-    hi NonText ctermbg=NONE
+" Vertsplit Theme
+hi LineNr guibg=bg
+set foldcolumn=0
+hi foldcolumn guibg=bg
+hi VertSplit guibg=bg guifg=bg
 
-    " Vertsplit Theme
-    hi LineNr guibg=bg
-    set foldcolumn=0
-    hi foldcolumn guibg=bg
-    hi VertSplit guibg=bg guifg=bg
-
-    " Font
-    "set guifont=Consolas:h11
-    set guifont=iosevka:h12
+" Font
+set guifont=Cascadia_Code:h11
     
-    " Disable edge of screen bell
-    set belloff=all
-endif
-
-" Neovim-qt settings
-if has('nvim')
-    if exists('g:GuiLoaded')
-        GuiFont! Consolas:h11
-        GuiTabline 0
-        GuiPopupmenu 0
-    endif
-endif
-
-colorscheme gruvbox
+" Disable edge of screen bell
+set belloff=all
